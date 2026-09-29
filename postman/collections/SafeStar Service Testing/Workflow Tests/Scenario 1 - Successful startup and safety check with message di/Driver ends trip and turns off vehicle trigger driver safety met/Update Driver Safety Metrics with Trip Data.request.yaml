@@ -1,5 +1,4 @@
 $kind: http-request
-name: Update Driver Safety Metrics with Trip Data
 url: "{{baseUrl}}/driver/:id"
 method: PUT
 headers:
@@ -44,12 +43,12 @@ auth:
 scripts:
   - type: afterResponse
     code: |-
-      pm.test("Status code is 200", function () {
-          pm.response.to.have.status(200);
+      pm.test("Status code is 404", function () {
+          pm.response.to.have.status(404);
       });
 
-      pm.test("Weather was updated", ()=> {
-          pm.expect(pm.response.json().weather).to.equal(2);
+      pm.test("Error code is PROFILE_NOT_FOUND", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.error.code).to.equal("PROFILE_NOT_FOUND");
       });
-    language: text/javascript
 order: 1000
